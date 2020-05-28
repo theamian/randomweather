@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>random weather</title>
+    <!-- needed for googlemaps api module -->
+    {% block gmap %}
+    {% endblock %}
+    <meta name="description" content="Random city weather and country info" />
+    <meta name="keywords" content="weather, town, city, map, country, info, location, clear, rain, snow, haze, drizzle, wind, thunderstorm" />
+    <meta name="author" content="theamian" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
+    <link href="/static/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+    <!-- CSS only -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <!-- the templating doesn't work if in a separate file with the rest of CSS -->
+    <style>
+    {% if ow %}
+    .bg_img {
+        background-repeat: no-repeat;
+        background-size: cover;
+        
+        {% if ow["weather"][0]["id"] in range(200, 233) %}
+        background-image: url("/static/thunderstorm.gif");
+        text-shadow: 2px 2px #cccccc;
+
+        {% elif ow["weather"][0]["id"] in range(300, 322) %}
+        background-image: url("/static/drizzle.gif");
+        color: white;
+        text-shadow: 2px 2px black;
+
+        {% elif ow["weather"][0]["id"] in range(500, 532) %}
+        background-image: url("/static/rain.gif");
+        color: white;
+        text-shadow: 2px 2px black;
+
+        {% elif ow["weather"][0]["id"] in range(600, 623) %}
+        background-image: url("/static/snow.gif");
+        color: white;
+        text-shadow: 2px 2px black;
+
+        {% elif ow["weather"][0]["id"] in range(701, 782) %}
+        background-image: url("/static/haze.gif");
+        background-position: 100% 60%;
+        text-shadow: 2px 2px #e6e6e6;
+
+        {% elif ow["weather"][0]["id"] == 800 %}
+        background-image: url("/static/clear.gif");
+        text-shadow: 2px 2px white;
+
+        {% else %}
+        background-image: url("/static/clouds.gif");
+        background-position: 0% 20%;
+        color: white;
+        text-shadow: 2px 2px black;
+
+        {% endif %}
+    {% endif %}
+    }
+    </style>
+</head>
+<body id="xx">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item {% block random_active %}{% endblock %}">
+                <a class="nav-link" href="/{% block nav2 %}{% endblock %}">random <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item {% block about_active %}{% endblock %}">
+              <a class="nav-link" href="/about">about</a>
+            </li>
+          </ul>
+          <span class="nav-item navbar-nav right-pad"><a class="nav-link {% block active_metric %}{% endblock %}" href="/">metric</a> <a class="nav-link {% block active_imperial %}{% endblock %}" href="/freedom">imperial</a></span>
+          <form class="form-inline my-2 my-lg-0" action="/search" method="POST">
+            <input class="form-control mr-sm-2" type="text" placeholder="search cities" aria-label="Search" name="search" required>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">search</button>
+          </form>
+        </div>
+      </nav>
+{% block nav %}
+{% endblock %}
+
+{% block main %}
+
+{% endblock %}
+
+<footer class="container foot">
+    <hr>
+    <p><a href="https://github.com/theamian">theamian</a> 2020 | no rights reserved</p>
+</footer>
+</body>

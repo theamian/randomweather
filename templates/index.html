@@ -1,0 +1,121 @@
+{% extends "layout.html" %}
+
+{% block gmap %}
+{{ karta.js }}
+{% endblock %}
+
+{% block nav %}
+<!-- {% block active_metric %}active{% endblock %} -->
+<!-- {% block random_active %}active{% endblock %} -->
+{% endblock %}
+{% block main%}
+      <main role="main">
+        <!-- Main jumbotron -->
+        <div class="jumbotron top-pad bg_img">
+            <div class="container">
+            <h1 class="display-3">{{grad["name"]}}</h1>
+            <h4 class="display-6">{{ ow["weather"][0]["description"] }}</h4>
+            </div>
+        </div>
+        <!-- Main row containing everything else -->
+        <div class="row mrow">
+            <!-- first of the three big columns -->
+            <div class="col-lg-3">
+                <!-- first row in left column -->
+                <div class="row">
+                    <div class="col-md-12 col-lg-auto rtable">
+                        <h3 class="table_right">temperature</h3>
+                        <p class="card_main">{{ ow["main"]["temp"]|round|int }}°{{ units["metric"]["temp"] }}</p>
+                        <table class="card_table">
+                            <tr>
+                                <td>feels like</td><td class="table_right">{{ ow["main"]["feels_like"]|round|int }}°{{ units["metric"]["temp"]}}</td>
+                            </tr>
+                            <tr>
+                                <td>min temp</td><td class="table_right">{{ ow["main"]["temp_min"]|round|int }}°{{ units["metric"]["temp"] }}</td>
+                            </tr>
+                            <tr>
+                                <td>max temp</td><td class="table_right">{{ ow["main"]["temp_max"]|round|int }}°{{ units["metric"]["temp"] }}</td>
+                            </tr>                           
+                        </table>
+                        <br>
+                    </div>
+                    <div class="col-md-12 col-lg-auto rtable">
+                        <h3 class="table_right">wind</h3>
+                        <p class="card_main">{{ ow["wind"]["speed"]|round|int}} {{ units["metric"]["speed"] }} {{ ow["wind"]["dir"] }}</p>
+                        <table class="card_table">
+                            <tr>
+                                <td>pressure</td><td class="table_right">{{ ow["main"]["pressure"]|round|int }}hPa</td>
+                            </tr>
+                            <tr>
+                                <td>humidity</td><td class="table_right">{{ ow["main"]["humidity"]|round|int }}%</td>
+                            </tr>
+                            <tr>
+                                <td>cloudiness</td><td class="table_right">{{ ow["clouds"]["all"]|round|int }}%</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- second of the three big columns -->
+            <div class="col-lg-6">
+                <div class="map_div">
+                    {{ karta.html }}
+                </div>
+            </div>
+            <!-- third of the three big columns -->
+            <div class="col-lg-3">
+                <h2>{{ country["name"] }}<span><img class="flag" src= {{ country["flag"] }} alt="national flag" /></span></h2>
+            
+                <table class="rtable"> 
+                <tr>
+                    <td>population</td><td class="table_right">{{ "{:,.0f}".format(country["population"]) }}</td>
+                </tr>
+                <tr>
+                    <td>capital</td><td class="table_right">{{ country["capital"] }}</td>
+                </tr>
+                <tr>
+                    <td>gini<sup><a class="ref" href="https://en.wikipedia.org/wiki/Gini_coefficient">?</a></sup></td><td class="table_right">{{ country["gini"] }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        {% if country["timezones"]|length > 1 %}
+                        timezones
+                        {% else %}
+                        timezone
+                        {% endif %}
+                    </td>
+                    {% for timezone in range(country["timezones"]|length) %}
+                    <td class="table_right">{{ country["timezones"][timezone] }}</td></tr><tr><td></td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>
+                        {% if country["currencies"]|length > 1 %}
+                        currencies
+                        {% else %}
+                        currency
+                        {% endif %}
+                    </td>
+                    {% for currency in range(country["currencies"]|length) %}
+                    <td class="table_right">{{ country["currencies"][currency]["name"] }}</td></tr><tr><td></td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>
+                        {% if country["languages"]|length > 1 %}
+                        languages
+                        {% else %}
+                        language
+                        {% endif %}
+                    </td>
+                    {% for language in range(country["languages"]|length) %}
+                    <td class="table_right">{{ country["languages"][language]["name"] }}</td></tr><tr><td></td>
+                    {% endfor %}
+                </tr>
+                </table>
+            </div>
+        </div>
+      </main>
+{% endblock %}
+</body>
+</html>

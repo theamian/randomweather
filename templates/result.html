@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block nav %}
+{% endblock %}
+
+{% block main %}
+<main role="main">
+<div class="row mrow top-pad">
+    
+    {% if result == None %}
+    <div class="col-lg-12">
+        <h2 class="display-5">no such city found</h2>
+    </div>
+    <div class="col-lg-12">
+        <img src="/static/oops.jpg" alt="no results" class="oops" />
+    </div>
+    {% else %}
+
+    {% for i in range(result|length) %}
+    <div class="col-lg-12 shadow rounded res_main">
+    <a  class="ref" href="/result/{{ result[i]["id"] }}">
+    <div>
+    <p class="display-4 res_title">{{ result[i]["name"] }}</p>
+    <p >country: {{ result[i]["country"] }} | 
+        {% if result[i]["state"] != "" %} state: {{ result[i]["state"] }} | {% endif %}
+        lat: {{ result[i]["coord"]["lat"] }} | 
+        lon: {{ result[i]["coord"]["lon"] }}
+    </p>
+    </div>
+    </a>
+    </div>
+    {% endfor %}
+    
+    {% endif %}
+    
+</div>
+
+</main>
+{% endblock %}

@@ -1,0 +1,4 @@
+fuzzywuzzy==0.18.0
+requests==2.23.0
+Flask==1.1.2
+flask_googlemaps==0.4.0
